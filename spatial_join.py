@@ -64,6 +64,8 @@ def toCSV(data):
 
 from pyspark import SparkContext
 from heapq import nlargest
+import sys
+import os
 
 if __name__ == '__main__':
     input_file = sys.argv[1]
