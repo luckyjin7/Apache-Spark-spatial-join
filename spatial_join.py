@@ -41,15 +41,16 @@ def processTrips(pid, records):
     reader = csv.reader(records)
     
     for row in reader:
-        try:
-            p_start = geom.Point(proj(float(row[5]), float(row[6])))
-            p_des = geom.Point(proj(float(row[9]), float(row[10])))
-            start = findZone(p_start, index, zones)
-            des = findZone(p_des, index, zones)
-        except ValueError:
-            continue
-        if (start != None) and (des != None):
-            yield ((zones['borough'][start], zones['neighborhood'][des]),1)
+        if len(row) == 18:
+            try:
+                p_start = geom.Point(proj(float(row[5]), float(row[6])))
+                p_des = geom.Point(proj(float(row[9]), float(row[10])))
+                start = findZone(p_start, index, zones)
+                des = findZone(p_des, index, zones)
+            except ValueError:
+                continue
+            if (start != None) and (des != None):
+                yield ((zones['borough'][start], zones['neighborhood'][des]),1)
 
 
 # In[4]:
