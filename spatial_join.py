@@ -73,7 +73,17 @@ if __name__ == '__main__':
     output_file = sys.argv[2]
 
     rdd = SparkContext().textFile(input_file)
-    rdd.mapPartitionsWithIndex(processTrips)         .reduceByKey(lambda x,y: x+y)         .map(lambda x: (x[0][0],x[0][1],x[1]))         .groupBy(lambda x: x[0])         .flatMap(lambda y: nlargest(3, y[1], key = lambda x: x[2]))         .map(lambda x: (x[0],(x[1],x[2])))         .reduceByKey(lambda x,y: x+y)         .sortByKey()         .map(lambda x: ((x[0],)+x[1]))         .map(toCSV)         .saveAsTextFile(output_file)
+    rdd.mapPartitionsWithIndex(processTrips)\
+    .reduceByKey(lambda x,y: x+y)\
+    .map(lambda x: (x[0][0],x[0][1],x[1]))\
+    .groupBy(lambda x: x[0])\
+    .flatMap(lambda y: nlargest(3, y[1], key = lambda x: x[2]))\
+    .map(lambda x: (x[0],(x[1],x[2])))\
+    .reduceByKey(lambda x,y: x+y)\
+    .sortByKey()\
+    .map(lambda x: ((x[0],)+x[1]))\
+    .map(toCSV)\
+    .saveAsTextFile(output_file)
 
 
 # In[ ]:
